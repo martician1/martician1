@@ -21,7 +21,7 @@ We are working with a 32-bit **statically linked** binary.
 Let's decompile the main function (using Ghidra, IDA,or whatever software you prefer really)
 and see what it does:
 
-```
+```c
 int main(void)
 
 {
@@ -50,16 +50,16 @@ int main(void)
 }
 ```
 I renamed the variables to make it look clearer.
-Since the `scanf` function deals with input it immediatelly struck me as a potential target.
+Since the `scanf` function deals with input it immediately struck me as a potential target.
 Unfortunately dereferencing the address of the format string (`0x080da6b5`) in GDB yields: `"%30s"`.
 This means that `scanf` will take up to 30 bytes of input which is the exact size of the buffer we pass it,
 thus we can not take advantage of a buffer overflow here.
 
-Geting back to the rest of the code we notice the `Base64Decode` function that was also present in the md5 calculator challenge.
+Getting back to the rest of the code we notice the `Base64Decode` function that was also present in the md5 calculator challenge.
 It signals that our input is assumed to be encoded in Base64. Additionally, to get pass the `if` statement
 we would also need the decoded input to be at most 12 bytes in length.
 Now let's look at `auth`.
-```
+```c
 bool auth(size_t len)
 
 {
@@ -146,11 +146,11 @@ This assures that after we pop into `$ebp` twice(via the `ret` instruction) exec
 in `malicious_code`. What's left to figure out is what the malicious code will be?
 We could directly jump to `system` but this would be tricky since `system` requires a string pointer as an argument
 (which means we have to assure that a pointer to such string is stored at `$esp+4` when we return to `system`,
-in other words this is highly unpleasent bussiness).
+in other words this is highly unpleasant business).
 Instead we notice that in the `correct` function we already have a gadget which sets up `'/bin/sh'` as an argument
 and calls system. We can simply jump to that gadget.
 
-```
+```c
 void correct(void)
 
 {
@@ -180,7 +180,7 @@ void correct(void)
 
 This leaves us with the final exploit:
 
-```
+```python
 from pwn import *
 
 elf = ELF('./slogin')
