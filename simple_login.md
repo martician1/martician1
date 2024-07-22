@@ -160,7 +160,8 @@ void correct(void)
   }
   exit(0);
 }
-
+```
+```
 0804925f <correct>:
  804925f:	55                   	push   ebp
  8049260:	89 e5                	mov    ebp,esp
