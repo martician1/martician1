@@ -7,3 +7,4 @@ with higher difficulty.
 - [simple login](simple_login.md)
 - [otp](otp.md)
 - [ascii_easy](ascii_easy.md)
+- [tiny_easy](tiny_easy.md)
