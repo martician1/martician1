@@ -99,11 +99,11 @@ it takes about a minute or two to start hitting the correct addresses:
 
 ```
 tiny_easy@pwnable:~$ python /tmp/ez/ez.py
-*flag*
+...(flag)...
 
-*flag*
+...(flag)...
 
-*flag*
+...(flag)...
 
 ...
 ```
