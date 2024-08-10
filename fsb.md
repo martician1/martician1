@@ -112,7 +112,7 @@ Breakpoint 2, 0x08048610 in fsb ()
 ```
 What may come as a hindrance is that the `key` address could be anywhere given that `alloca` can allocate
 up to `0x12345` bytes on the stack.
-What we know is it lies at least 100 bytes after `esp`.
+What we know is that it lies at least 100 bytes after `esp`.
 We can try finding where it is by sending as input format strings like the following:
 ```
 "%25$p %26$p %27$p ... " - prints [esp + 100], [esp + 104], [esp + 108] ...
