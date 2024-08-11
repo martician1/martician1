@@ -9,3 +9,4 @@ with higher difficulty.
 - [ascii_easy](ascii_easy.md)
 - [tiny_easy](tiny_easy.md)
 - [fsb](fsb.md)
+- [dragon](dragon.md)
