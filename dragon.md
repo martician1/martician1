@@ -2,7 +2,7 @@
 There is a lot going on in the `dragon` binary so I won't be diving deeply into each and every function.
 You can check the [call graph visualization](#call_graph) for a general overview of the control flow.
 Briefly, `main` unbuffers the iostreams and calls `PlayGame` whereas
-`PlayGame` acts as the Main Menu. Things get interesting when we get to `FightDragon`.
+`PlayGame` acts as the Main Menu of the game. Things get more interesting when we get to `FightDragon`.
 The following code is a tweaked version of Ghidra's decompilation output:
 
 ```c
@@ -93,11 +93,11 @@ It calls `dragon->info_function` even though `dragon` is at that time a dangling
 You might think that this would segfault but there is actually a convenient `malloc`
 2 lines before which ends up allocating the same memory block that the dragon occupied
 (so `name == dragon` would evaluate to `true`).
-Hmm... so the ` (*(code *)dragon->info_function)(dragon); ` would actually be a call to whatever
-we write in `name`, Good, then we could write an arbitrary address redirecting code execution to it.
+which means that ` (*(code *)dragon->info_function)(dragon); ` would actually be a call to whatever
+we write in `name`. Good, then we could write an arbitrary address redirecting code execution to it.
 If we could just figure out how to win in the first place...
 
-At first glance It might seem impossible, no matter the dragon, no matter the hero you choose
+At first glance this might seem impossible, no matter the dragon, no matter the hero you choose
 you will always end up dying before the dragon. But there is another way of winning.
 What might have struck you as odd in the above decompilation is that the dragon health
 is stored in a char variable. That means that the dragon health can be in the range `[-128, 127]`.
