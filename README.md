@@ -1,7 +1,9 @@
-A collection of my [pwnable.kr](pwnable.kr) writeups.
-There are already very good writeups for the "Toddler's bottle" level,
-my goal is to provide beginners with writeups for the less accessible problems
-with higher difficulty.
+A collection of my writeups for the "Rookiss" challenges on [pwnable.kr](pwnable.kr).
+There are already very good writeups for the "Toddler's bottle" level
+but I don't think they are enough of a preparation for beginners
+to start cracking harder challenges on their own
+That doesn't mean they shouldn't try though.
+On the contrary, always use the writeups as a last resort!
 
 ### Reference:
 - [simple login](simple_login.md)
