@@ -12,3 +12,4 @@ On the contrary, always use the writeups as a last resort!
 - [tiny_easy](tiny_easy.md)
 - [fsb](fsb.md)
 - [dragon](dragon.md)
+- [fix](fix.md)
