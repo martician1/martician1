@@ -13,3 +13,4 @@ On the contrary, always use the writeups as a last resort!
 - [fsb](fsb.md)
 - [dragon](dragon.md)
 - [fix](fix.md)
+- [syscall](syscall.md)
