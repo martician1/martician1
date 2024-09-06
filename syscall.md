@@ -67,11 +67,11 @@ is modifying the kernel's syscall table so that `sys_upper` can be invoked as a 
 The `sys_upper` function itself simply copies a string from `in` to `out`,
 replacing any lower case characters with their upper case equivalents.
 
-Equiped with the notion of user and kernel space we spot a potential vulnerability:
-Since `sys_upper` is a syscall, it gets executed with kernel privilages,
+Equipped with the notion of user and kernel space we spot a potential vulnerability:
+Since `sys_upper` is a syscall, it gets executed with kernel privileges,
 meaning that we can copy strings (specifically malicious ones!) to any address including those in kernel space.
 
-So let's write a shellcode that escalates out privilages and inject it somewehere in the kernel.
+So let's write a shellcode that escalates out privileges and inject it somewhere in the kernel.
 The easiest way to achieve this is by combining the following kernel functions:
 
 ```c
@@ -80,7 +80,7 @@ commit_creds(prepare_kernel_cred(NULL))
 Explanation:
 
 - `prepare_kernel_cred(NULL)` - when invoked with `NULL` this function returns a pointer
-  to a credentials struct that encodes root privilages.
+  to a credentials struct that encodes root privileges.
 - `commit_creds(struct cred*)` - applies/"commits" credentials.
 
 You can find the symbols of these functions by reading from `/proc/kallsyms` on the pwnable server.
@@ -88,7 +88,7 @@ You can find the symbols of these functions by reading from `/proc/kallsyms` on 
 ### ARM calling convention:
 The pwnable server is using `32-bit arm` architecture.
 For a somewhat-complete overview of `arm`'s calling convention you can read [here](https://en.wikipedia.org/wiki/Calling_convention#ARM_(A32)).
-What's most important to us is how arguments are passed to funcitons, as it's different from `x86`:
+What's most important to us is how arguments are passed to functions, as it's different from `x86`:
 `r0 to r3 hold argument values passed to a subroutine and results returned from a subroutine.`
 With the arm semantics in mind I constructed the following shellcode (note, you might have to install an `arm` toolchain for the assembling):
 ```python
@@ -111,16 +111,16 @@ pop  {r3, fp, pc}
 
 print(''.join('\\x{:02x}'.format(byte) for byte in shellcode))
 ```
-I couldn't figure out how to embed commetns into the assembly string so here are some clarifications:
+I couldn't figure out how to embed comments into the assembly string so here are some clarifications:
 
 - `0x80064c8c` - the address of `bool is_module_address(unsigned long addr)`, this is a random kernel function which
-  fortunatelly happened to return 0. This call is necessary for zeroing out `r0` which can't be done by
+  fortunately happened to return 0. This call is necessary for zeroing out `r0` which can't be done by
   any of the conventional `xor r0, r1, r1`, `mov r0, #0`, etc. instructions since all of them contain
   a `\x00` (string termination) byte in their assembled versions.
 - `0x8003f924` - the address of `prepare_kernel_cred()`, to invoke it with `NULL` `r0` has to be 0.
 - `0x8003f56c` - the address of `commit_creds(struct cred *)`, We call this function just after `prepare_kernel_cred` so that
-  the return value of the latter (that is the root privilage credential struct) is used as the function argument.
-- Pushing/Poping the `r3` register and spliting the `commit_creds`' address is necessary
+  the return value of the latter (that is the root privilege credential struct) is used as the function argument.
+- Pushing/Popping the `r3` register and splitting the `commit_creds`' address is necessary
   for not having lower case characters and the `\x00` byte as parts of the shellcode.
 
 Now, back to the exploit, I inserted the script output into the `shellcode` variable in the C snippet bellow.
@@ -143,7 +143,7 @@ int main() {
 }
 ```
 
-After gaining root privilages we can just get shell and go on about our day.
+After gaining root privileges we can just get shell and go on about our day.
 
 Here is a showcase of the final exploit on the pwnable server, don't worry about the `can't access tty` message,
 `/bin/sh` still gets executed successfully:
